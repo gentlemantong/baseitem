@@ -191,7 +191,7 @@ def dumps_item(item):
                     if issubclass(child_type, BaseItem):
                         val_obj = dumps_item(val)
                     else:
-                        val_obj = getattr(item, key)
+                        val_obj = val
                     val_list.append(val_obj)
                 result_dict[key] = val_list
             elif issubclass(data_type, BaseItem):
