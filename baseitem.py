@@ -101,28 +101,7 @@ class DictItem(MutableMapping, ObjectRef):
 
     def __setattr__(self, name, value):
         if not name.startswith(u'_'):
-            if name in self.fields:
-                data_type = self.fields[name][u'data_type']
-                if data_type in _child_allowed_types:
-                    child_type = self.fields[name][u'child_type']
-                    val_list = []
-                    for val in value:
-                        try:
-                            if (child_type in _char_types and type(val) in _char_types) or isinstance(val, child_type):
-                                val_list.append(val)
-                            else:
-                                raise TypeError(u"({0}, {1}) is not a valid child-record for '{2}' while whose standard"
-                                                u" child_type is {3}".format(val, type(val), name, child_type))
-                        except Exception as e:
-                            logging.exception(u"Invalid child-record, it'll be passed! - {0}".format(e))
-                    self._values[name] = val_list
-                elif (data_type in _char_types and type(value) in _char_types) or isinstance(value, data_type):
-                    self._values[name] = value
-                else:
-                    raise TypeError(u"({0}, {1}) is not valid for '{2}' while whose standard type is {3}".format(
-                        value, type(value), name, data_type))
-            else:
-                raise KeyError("%s does not support field: %s" % (self.__class__.__name__, name))
+            self.__setitem__(name, value)
         else:
             super(DictItem, self).__setattr__(name, value)
 
